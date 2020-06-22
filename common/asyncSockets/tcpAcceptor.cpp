@@ -1,16 +1,16 @@
 #include "tcpAcceptor.h"
 
-TCPAcceptor::TCPAcceptor(std::function<void(int, std::string)> t_on_error) 
+TCPAcceptor::TCPAcceptor(ErrorProcessor t_on_error) 
     : BaseSocket(t_on_error, TCP)
 {
 }
 
-void TCPAcceptor::bind(const int t_port, std::function<void(int, std::string)> t_on_error)
+void TCPAcceptor::bind(const int t_port, ErrorProcessor t_on_error)
 {
     this->bind("0.0.0.0", t_port, t_on_error);
 }
 
-void TCPAcceptor::bind(const std::string t_address, const int t_port, std::function<void(int, std::string)> t_on_error)
+void TCPAcceptor::bind(const std::string t_address, const int t_port, ErrorProcessor t_on_error)
 {
     if (inet_pton(AF_INET, t_address.c_str(), &this->m_address.sin_addr) <= 0)
     {
@@ -28,7 +28,7 @@ void TCPAcceptor::bind(const std::string t_address, const int t_port, std::funct
     }
 }
 
-void TCPAcceptor::listen(std::function<void(int, std::string)> t_on_error)
+void TCPAcceptor::listen(ErrorProcessor t_on_error)
 {
     if (::listen(this->m_sock, 10) < 0)
     {
@@ -47,7 +47,7 @@ void TCPAcceptor::closeRaw()
     BaseSocket::closeRaw();
 }
 
-void TCPAcceptor::accept(TCPAcceptor *t_server, std::function<void(int, std::string)> t_on_error)
+void TCPAcceptor::accept(TCPAcceptor *t_server, ErrorProcessor t_on_error)
 {
     sockaddr_in newSocketInfo;
     socklen_t newSocketInfoLength = sizeof(newSocketInfo);

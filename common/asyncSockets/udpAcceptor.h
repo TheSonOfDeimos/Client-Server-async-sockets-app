@@ -8,6 +8,8 @@
 class UDPAcceptor : public UDPSocket
 {
 public:
+    typedef UDPSocket::ErrorProcessor ErrorProcessor;
+
     UDPAcceptor();
 
     void bind(int t_port, FDR_ON_ERROR);

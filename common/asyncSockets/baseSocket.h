@@ -18,14 +18,13 @@ constexpr uint16_t BUFFER_SIZE = 0xFFFF;
 class BaseSocket
 {
 public:
+    typedef std::function<void(int, std::string)> ErrorProcessor;
+
     enum SocketType
     {
         TCP = SOCK_STREAM,
         UDP = SOCK_DGRAM
     };
-
-    sockaddr_in m_address;
-    bool m_is_closed = false;
 
     explicit BaseSocket(FDR_ON_ERROR, SocketType t_sock_type = TCP, int t_socket_id = -1);
     BaseSocket(const BaseSocket& t_other) = delete;
@@ -37,6 +36,9 @@ public:
 
     std::string remoteAddress();
     int remotePort();
+
+    sockaddr_in m_address;
+    bool m_is_closed = false;
 
 protected:
     int m_sock = 0;

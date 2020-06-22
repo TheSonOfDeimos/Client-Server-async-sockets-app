@@ -10,6 +10,8 @@
 class UDPSocket : public BaseSocket
 {
 public:
+    typedef BaseSocket::ErrorProcessor ErrorProcessor;
+
     std::function<void(std::string, std::string, std::uint16_t)> onMessageReceived;
     std::function<void(const char*, int, std::string, std::uint16_t)> onRawMessageReceived;
 

@@ -4,11 +4,11 @@ UDPAcceptor::UDPAcceptor()
 {
 }
 
-void UDPAcceptor::bind(int port, std::function<void(int, std::string)> t_on_error) {
+void UDPAcceptor::bind(int port, ErrorProcessor t_on_error) {
     this->bind("0.0.0.0", port, t_on_error);
 }
 
-void UDPAcceptor::bind(std::string IPv4, std::uint16_t port, std::function<void(int, std::string)> t_on_error)
+void UDPAcceptor::bind(std::string IPv4, std::uint16_t port, ErrorProcessor t_on_error)
 {
     if (inet_pton(AF_INET, IPv4.c_str(), &this->m_address.sin_addr) <= 0)
     {

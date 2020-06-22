@@ -1,7 +1,7 @@
 #include "udpSocket.h"
 #include <string.h>
 
-UDPSocket::UDPSocket(bool useConnect, std::function<void(int, std::string)> t_on_error, int t_socket_Id) 
+UDPSocket::UDPSocket(bool useConnect, ErrorProcessor t_on_error, int t_socket_Id) 
     : BaseSocket(t_on_error, UDP, t_socket_Id)
 {
     if (!useConnect)
@@ -16,12 +16,12 @@ UDPSocket::UDPSocket(bool useConnect, std::function<void(int, std::string)> t_on
     }
 }
 
-void UDPSocket::writeTo(std::string t_message, std::string t_host, uint16_t t_port, std::function<void(int, std::string)> t_on_error)
+void UDPSocket::writeTo(std::string t_message, std::string t_host, uint16_t t_port, ErrorProcessor t_on_error)
 {
     this->writeTo(t_message.c_str(), t_message.length(), t_host, t_port, t_on_error);
 }
 
-void UDPSocket::writeTo(const char *t_bytes, size_t t_bytes_length, std::string t_host, uint16_t t_port, std::function<void(int, std::string)> t_on_error)
+void UDPSocket::writeTo(const char *t_bytes, size_t t_bytes_length, std::string t_host, uint16_t t_port, ErrorProcessor t_on_error)
 {
     sockaddr_in hostAddr;
 
@@ -75,7 +75,7 @@ int UDPSocket::write(const char *t_bytes, size_t t_bytes_length)
     return sent;
 }
 
-void UDPSocket::connect(std::string t_host, uint16_t t_port, std::function<void(int, std::string)> t_on_error)
+void UDPSocket::connect(std::string t_host, uint16_t t_port, ErrorProcessor t_on_error)
 {
     struct addrinfo hints, *res, *it;
     memset(&hints, 0, sizeof(hints));
@@ -102,7 +102,7 @@ void UDPSocket::connect(std::string t_host, uint16_t t_port, std::function<void(
 
     this->connect((uint32_t)this->m_address.sin_addr.s_addr, t_port, t_on_error);
 }
-void UDPSocket::connect(uint32_t ipv4, uint16_t t_port, std::function<void(int, std::string)> t_on_error)
+void UDPSocket::connect(uint32_t ipv4, uint16_t t_port, ErrorProcessor t_on_error)
 {
     this->m_address.sin_family = AF_INET;
     this->m_address.sin_port = htons(t_port);

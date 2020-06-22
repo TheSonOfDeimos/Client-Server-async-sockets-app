@@ -10,14 +10,14 @@ std::string BaseSocket::ipToString(sockaddr_in addr)
     return std::string(ip);
 }
 
-BaseSocket::BaseSocket(std::function<void(int, std::string)> onError, SocketType t_sock_type, int t_socket_id) 
+BaseSocket::BaseSocket(ErrorProcessor t_on_error, SocketType t_sock_type, int t_socket_id) 
     : m_sock(t_socket_id)
 {
     if (t_socket_id < 0)
     {
         if ((this->m_sock = socket(AF_INET, t_sock_type, 0)) < 0)
         {
-            onError(errno, "Socket creating error.");
+            t_on_error(errno, "Socket creating error.");
         }
     }
 }

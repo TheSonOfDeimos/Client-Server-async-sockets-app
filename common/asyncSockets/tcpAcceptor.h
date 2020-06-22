@@ -10,19 +10,16 @@
 class TCPAcceptor : public BaseSocket
 {
 public:
-    // Event Listeners:
+    typedef BaseSocket::ErrorProcessor ErrorProcessor;
+
     std::function<void(TCPSocket *)> onNewConnection = [](TCPSocket* t_sock){FDR_UNUSED(t_sock)};
 
     explicit TCPAcceptor(FDR_ON_ERROR);
 
-    // Binding the server.
     void bind(const int t_port, FDR_ON_ERROR);
     void bind(const std::string t_address, const int t_port, FDR_ON_ERROR);
 
-    // Start listening the server.
     void listen(FDR_ON_ERROR);
-
-    // Overriding Close to add shutdown():
     void closeRaw() override;
 
 private:
